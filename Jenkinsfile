@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/YOUR-GITHUB-ACCOUNT-NAME/SSDLAB7A_1.git'
+                git 'https://github.com/JIAJINSIM/SSDLAB7A_1.git'
             }
         }
         stage('Build') {
