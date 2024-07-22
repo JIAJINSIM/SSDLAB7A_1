@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/YOUR-GITHUB-ACCOUNT-NAME/SSDLAB7A_1.git', credentialsId: 'YOUR_CREDENTIALS_ID'
+                git url: 'https://github.com/JIAJINSIM/SSDLAB7A_1.git', credentialsId: 'JIAJINSIM'
             }
         }
         stage('Build') {
