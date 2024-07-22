@@ -8,8 +8,9 @@ pipeline {
         }
         stage('Build') {
             steps {
+                // Ensure the correct directory is mounted
                 sh 'docker pull composer:latest'
-                sh 'docker run --rm composer:latest install'
+                sh 'docker run --rm -v $PWD:/app -w /app composer:latest install'
             }
         }
         stage('Test') {
