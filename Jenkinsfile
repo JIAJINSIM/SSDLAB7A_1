@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'composer:latest'
+        }
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -8,20 +12,20 @@ pipeline {
         }
         stage('Build') {
             steps {
-                // Ensure the correct directory is mounted
-                sh 'docker pull composer:latest'
-                sh 'docker run --rm -v $PWD:/app -w /app composer:latest install'
+                sh 'composer install'
             }
         }
         stage('Test') {
             steps {
-                sh './vendor/bin/phpunit --log-junit logs/unitreport.xml -c tests/phpunit.xml tests'
+                sh './vendor/bin/phpunit tests'
             }
         }
-        post {
-			always {
-				junit testResults: 'logs/unitreport.xml'
-				}
+        stage('Deliver') {
+            steps {
+                sh './jenkins/scripts/deliver.sh'
+                input message: 'Finished using the web site? (Click "Proceed" to continue)'
+                sh './jenkins/scripts/kill.sh'
+            }
         }
     }
 }
