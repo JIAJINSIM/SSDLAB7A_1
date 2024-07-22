@@ -13,9 +13,17 @@ pipeline {
         }
         stage('Test') {
             steps {
+                // Run PHPUnit tests with docker-compose
                 sh 'docker-compose run --rm composer ./vendor/bin/phpunit tests'
+                // Run additional PHPUnit tests and generate JUnit report
+                sh 'docker-compose run --rm composer ./vendor/bin/phpunit --log-junit logs/unitreport.xml -c tests/phpunit.xml tests'
             }
         }
-		}
+    }
+    post {
+        always {
+            // Publish JUnit test results
+            junit testResults: 'logs/unitreport.xml'
+        }
+    }
 }
-
